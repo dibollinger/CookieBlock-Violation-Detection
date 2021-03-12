@@ -19,8 +19,8 @@ This repository contains scripts that were used in combination with the other re
 ## Credits and License
 
 Copyright © 2021 Dino Bollinger
-Under the MIT License
-See included LICENSE file
+
+MIT License, see included LICENSE file
 
 These scripts were created as part of a master thesis on GDPR Compliance, 
 and is part of a series of repositories for the CookieBlock browser extension:
