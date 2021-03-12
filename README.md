@@ -22,12 +22,14 @@ Copyright © 2021 Dino Bollinger
 
 MIT License, see included LICENSE file
 
-These scripts were created as part of a master thesis on GDPR Compliance, 
-and is part of a series of repositories for the CookieBlock browser extension:
+---
 
-TODO
+The scripts in this repository were created as part of a master thesis on GDPR Compliance, 
+and is part of a series of repositories for the __CookieBlock__ browser extension:
 
-Thanks go to:
+https://github.com/dibollinger/CookieBlock
+
+__Thesis Supervision and Assistance:__
 * Karel Kubicek
 * Dr. Carlos Cotrini
 * Prof. Dr. David Basin

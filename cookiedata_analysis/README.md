@@ -15,4 +15,5 @@ The input data must be provided in the form of JSON, as extracted by `database_s
    Also queries the Cookiepedia repository to retrieve cookie labels, to compare them to the majority opinion. Supports 8 different modes.
 * `cookiepedia_baseline.py`: Computes the confusion matrix + precision and recall statistics based on the cookiepedia baseline. Uses 5-folds to take an average score.
 * `cookiepedia_repo.py`: Simple script to create a cookie - label lookup table from the retrieved Cookiepedia results.
+* `feature_matrix_statistics.py`: Script used to determine which feature are most and least used inside the extracted sparse feature matrix. For use with the feature extractor.
 * `get_cookiepedia_accuracy.py`: Computes the accuracy over all cookie samples, no splitting. Requires the outputs of `cookie_stats.py`.
