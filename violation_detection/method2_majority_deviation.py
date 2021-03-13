@@ -162,8 +162,8 @@ def main():
     logger.info(f"Majority Advertising: {confusion_matrix[3]}")
 
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
-    write_json(violation_details, "violation02_details.json")
-    write_vdomains(violation_domains, "vo2_domains.txt")
+    write_json(violation_details, "method2_cookies.json")
+    write_vdomains(violation_domains, "method2_domains.txt")
 
     return 0
 

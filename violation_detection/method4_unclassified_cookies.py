@@ -85,8 +85,8 @@ def main():
             v_per_cmp[c["cmp_type"]] += 1
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
 
-    write_json(violation_details, "violation03_details.json")
-    write_vdomains(violation_domains, "vo3_domains.txt")
+    write_json(violation_details, "method4_cookies.json")
+    write_vdomains(violation_domains, "method4_domains.txt")
 
     return 0
 

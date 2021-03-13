@@ -236,8 +236,8 @@ def main():
     logger.info(f"Number of session cookies declared as persistent cookies: {sess_as_persistent}")
     logger.info(f"Number of persistent cookies with wrong expiration date: {wrong_expiry}")
 
-    write_json(inconsistency_details, "inconsistency01_details.json")
-    write_vdomains(inconsistency_domains, "ic01_domains.txt")
+    write_json(inconsistency_details, "method3_cookies.json")
+    write_vdomains(inconsistency_domains, "method3_domains.txt")
 
     return 0
 

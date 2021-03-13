@@ -124,8 +124,8 @@ def main():
     logger.info(f"Undetected cookies per CMP Type: {v_per_cmp}")
     logger.info(f"Average per CMP type: [{v_per_cmp[0]/cmp_count[0]:.2f},{v_per_cmp[1]/cmp_count[1]:.2f},{v_per_cmp[2]/cmp_count[2]:.2f}]")
 
-    write_json(undetected_details, "inconsistency03_details.json")
-    write_vdomains(undetected_sites, "ic03_domains.txt")
+    write_json(undetected_details, "undetected_cookies.json")
+    write_vdomains(undetected_sites, "undetected_cookie_domains.txt")
 
 
     return 0
