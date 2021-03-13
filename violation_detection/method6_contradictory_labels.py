@@ -65,11 +65,17 @@ def main():
     total_domains = set()
     total_entries = 0
 
+    num_necessary_viol = 0
+    set_nec_sites = set()
+
     for key, cookie in cookies_dict.items():
         vdomain = cookie["site_url"]
         if len(cookie["additional_labels"]) > 0:
             violation_domains.add(vdomain)
             violation_count += 1
+            if cookie["label"] == 0 or 0 in cookie["additional_labels"]:
+                num_necessary_viol += 1
+                set_nec_sites.add(vdomain)
 
             if vdomain not in violation_details:
                 violation_details[vdomain] = list()
@@ -82,6 +88,9 @@ def main():
     logger.info(f"Number of declared cookies with multiple conflicting labels: {violation_count}")
     logger.info(f"Number of sites with working CMP and declared cookies in total: {len(total_domains)}")
     logger.info(f"Number of sites that declare conflicting labels: {len(violation_domains)}")
+
+    logger.info(f"Number of conflicting labels with necessary cookies: {num_necessary_viol}")
+    logger.info(f"Number of sites that declare conflicting labels with necessary cookies: {len(set_nec_sites)}")
 
     v_per_cmp = [0, 0, 0]
     for url, violating_cookies in violation_details.items():
