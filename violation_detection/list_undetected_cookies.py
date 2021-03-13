@@ -16,7 +16,7 @@ import sqlite3
 import traceback
 
 import logging
-from violation_detection.utils import (setupLogger, CONSENTDATA_QUERY, get_violation_details_consent_table,
+from utils import (setupLogger, CONSENTDATA_QUERY, get_violation_details_consent_table,
                                        JAVASCRIPTCOOKIE_QUERY, write_json, write_vdomains, canonical_domain)
 
 logger = logging.getLogger("vd")

@@ -18,7 +18,7 @@ import traceback
 import re
 
 import logging
-from violation_detection.utils import (setupLogger, CONSENTDATA_QUERY, write_vdomains,
+from utils import (setupLogger, CONSENTDATA_QUERY, write_vdomains,
                                        JAVASCRIPTCOOKIE_QUERY, write_json, canonical_domain)
 
 

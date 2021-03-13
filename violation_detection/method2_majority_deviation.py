@@ -6,7 +6,7 @@ outputting all deviations from the majority opinion for a cookie identified by n
 and domain, where the occurrences for that cookie need to be greater than a threshold.
 ----------------------------------
 Usage:
-    violation02 <db_path> <lower>
+    violation02 <db_path>
 """
 
 import os
@@ -18,12 +18,15 @@ from docopt import docopt
 from numpy import argmax
 from typing import Dict, List, Any, Tuple
 
-from violation_detection.utils import (setupLogger, write_json, CONSENTDATA_QUERY,
+from utils import (setupLogger, write_json, CONSENTDATA_QUERY,
                                        write_vdomains, get_violation_details_consent_table)
 
 logger = logging.getLogger("vd")
 
 unclass_pattern = re.compile("(unclassified|uncategorized|Unclassified Cookies|no clasificados)", re.IGNORECASE)
+
+threshold = 10
+min_ratio = (2/3)
 
 
 def get_category_counts(cookie_data: Dict[str, Dict[str, Any]]) -> Dict[Tuple[str,str], List[int]]:
@@ -79,8 +82,6 @@ def main():
         logger.error("Database file does not exist.")
         return 1
 
-    threshold = int(cargs["<lower>"])
-
     # enable dictionary access by column name
     conn = sqlite3.connect(database_path)
     conn.row_factory = sqlite3.Row
@@ -116,8 +117,9 @@ def main():
 
         key = (val["name"], val["domain"])
         sum_total = sum(l_ident[key][0:4])
-        expected_label = argmax(l_ident[key][0:4])
-        if sum_total >= threshold and int(val["label"]) != expected_label:
+        expected_label = int(argmax(l_ident[key][0:4]))
+        maj_ratio = l_ident[key][expected_label] / sum_total if sum_total > 0 else 0
+        if sum_total >= threshold and maj_ratio > min_ratio and int(val["label"]) != expected_label:
             #logger.info(f"Potential Violation found for cookie {val['name']}, {val['domain']}, {val['site_url']}"
             #            + f" -- actual label {val['label']} -- majority label: {expected_label}")
 
@@ -126,6 +128,8 @@ def main():
                 violation_details[vdomain] = list()
             dat = val.copy()
             dat["majority"] = int(expected_label)
+            dat["maj_count"] = l_ident[key][expected_label]
+            dat["maj_ratio"] = maj_ratio
             violation_details[vdomain].append(dat)
 
             violation_domains.add(vdomain)

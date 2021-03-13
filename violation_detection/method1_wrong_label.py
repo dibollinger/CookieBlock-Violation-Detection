@@ -20,7 +20,7 @@ import sqlite3
 import re
 
 import logging
-from violation_detection.utils import (setupLogger, CONSENTDATA_QUERY, write_json,
+from utils import (setupLogger, CONSENTDATA_QUERY, write_json,
                                        get_violation_details_consent_table, write_vdomains)
 
 logger = logging.getLogger("vd")

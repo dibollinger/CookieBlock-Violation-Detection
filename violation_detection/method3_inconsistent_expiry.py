@@ -19,7 +19,7 @@ import traceback
 import logging
 
 from docopt import docopt
-from violation_detection.utils import (setupLogger, retrieve_matched_cookies_from_DB,
+from utils import (setupLogger, retrieve_matched_cookies_from_DB,
                                        write_json, write_vdomains)
 
 logger = logging.getLogger("vd")
