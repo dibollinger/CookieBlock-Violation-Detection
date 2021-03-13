@@ -6,7 +6,7 @@ outputting all deviations from the majority opinion for a cookie identified by n
 and domain, where the occurrences for that cookie need to be greater than a threshold.
 ----------------------------------
 Usage:
-    violation02 <db_path>
+    method2_majority_deviation.py <db_path>
 """
 
 import os
@@ -75,12 +75,14 @@ def main():
 
     setupLogger(".")
 
-    logger.info("Running violation detection 02")
+    logger.info("Running method 02: Identifying Outlier Labels")
 
     database_path = cargs["<db_path>"]
     if not os.path.exists(database_path):
         logger.error("Database file does not exist.")
         return 1
+
+    logger.info(f"Database used: {database_path}")
 
     # enable dictionary access by column name
     conn = sqlite3.connect(database_path)

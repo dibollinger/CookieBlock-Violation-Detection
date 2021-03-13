@@ -7,7 +7,7 @@ by checking whether the website defines two differing labels for the same cookie
 Required arguments:
     <db_path>   Path to database to analyze.
 Usage:
-    violation05 <db_path>
+    method6_contradictory_labels.py <db_path>
 """
 
 from docopt import docopt
@@ -31,12 +31,14 @@ def main():
 
     setupLogger(".")
 
-    logger.info("Running violation detection 05")
+    logger.info("Running method 06: Contradictory Labels")
 
     database_path = cargs["<db_path>"]
     if not os.path.exists(database_path):
         logger.error("Database file does not exist.")
         return 1
+
+    logger.info(f"Database used: {database_path}")
 
     # enable dictionary access by column name
     conn = sqlite3.connect(database_path)

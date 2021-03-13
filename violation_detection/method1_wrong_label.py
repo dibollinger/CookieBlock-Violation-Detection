@@ -11,7 +11,7 @@ Optional arguments:
     <domain_pattern>: Specifies the regex pattern for the cookie domain.
     <expected_label>: Expected label for the cookie.
 Usage:
-    violation01 <db_path> [<name_pattern> <domain_pattern> <expected_label>]
+    method1_wrong_label.py <db_path> [<name_pattern> <domain_pattern> <expected_label>]
 """
 
 from docopt import docopt
@@ -36,7 +36,7 @@ def main():
 
     setupLogger(".", logging.INFO)
 
-    logger.info("Running violation detection 01")
+    logger.info("Running method 01: Wrong Label for Known Cookie")
 
     # Specify name, domain patter and expected label by input, or
     if cargs["<name_pattern>"]:
@@ -54,6 +54,8 @@ def main():
     if not os.path.exists(database_path):
         logger.error("Database file does not exist.")
         return 1
+
+    logger.info(f"Database used: {database_path}")
 
     # enable dictionary access by column name, access database
     conn = sqlite3.connect(database_path)

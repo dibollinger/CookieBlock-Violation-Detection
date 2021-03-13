@@ -7,7 +7,7 @@ hat have been declared but not been found by the crawler.
 Required arguments:
     <db_path>   Path to database to analyze.
 Usage:
-    inconsistency03 <db_path>
+    list_undetected_cookies.py <db_path>
 """
 
 from docopt import docopt
@@ -32,12 +32,14 @@ def main():
 
     setupLogger(".", logging.INFO)
 
-    logger.info("Running inconsistency detection 03")
+    logger.info("Listing out undetected cookies...")
 
     database_path = cargs["<db_path>"]
     if not os.path.exists(database_path):
         logger.error("Database file does not exist.")
         return 1
+
+    logger.info(f"Database used: {database_path}")
 
     # enable dictionary access by column name
     conn = sqlite3.connect(database_path)

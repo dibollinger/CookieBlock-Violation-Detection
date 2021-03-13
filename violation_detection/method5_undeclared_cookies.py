@@ -8,7 +8,7 @@ This could potentially mean that these cookies cannot be consented to or rejecte
 Required arguments:
     <db_path>   Path to database to analyze.
 Usage:
-    violation04 <db_path>
+    method5_undeclared_cookies.py <db_path>
 """
 
 from docopt import docopt
@@ -35,12 +35,14 @@ def main():
 
     setupLogger(".")
 
-    logger.info("Running violation detection 04")
+    logger.info("Running method 05: Undeclared Cookies")
 
     database_path = cargs["<db_path>"]
     if not os.path.exists(database_path):
         logger.error("Database file does not exist.")
         return 1
+
+    logger.info(f"Database used: {database_path}")
 
     # enable dictionary access by column name
     conn = sqlite3.connect(database_path)

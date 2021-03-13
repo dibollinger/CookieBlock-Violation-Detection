@@ -7,7 +7,7 @@ by comparing the actual expiration date of a cookie to the declared expiration d
 Required arguments:
     <db_path>  Path to database to analyze.
 Usage:
-    inconsistency01 <db_path>
+    method3_inconsistent_expiry.py <db_path>
 """
 
 
@@ -147,12 +147,13 @@ def main():
     cargs = docopt(__doc__, argv=argv)
 
     setupLogger(".", logging.INFO)
-    logger.info("Running inconsistency detection 01")
+    logger.info("Running method 03: Incorrect Retention Period")
 
     database_path = cargs["<db_path>"]
     if not os.path.exists(database_path):
         logger.error("Database file does not exist.")
         return 1
+    logger.info(f"Database used: {database_path}")
 
     # enable dictionary access by column name
     conn = sqlite3.connect(database_path)
