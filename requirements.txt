@@ -1,11 +1,2 @@
-requests~=2.25.1
-Pebble~=4.6.0
-beautifulsoup4~=4.9.3
 docopt~=0.6.2
 numpy~=1.19.5
-tldextract~=3.1.0
-tqdm~=4.59.0
-sklearn~=0.0
-scikit-learn~=0.24.1
-Js2Py~=0.70
-pyenchant~=3.2.0

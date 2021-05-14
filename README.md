@@ -1,36 +1,60 @@
-# Other Scripts used in the Development of CookieBlock
+# GDPR Violation Detection for Consent Management Platforms
 
-This repository contains scripts that were used in combination with the other repositories:
-* Domain lists, filtering duplicate domains and retrieving potential crawl targets from Cookiepedia.
-* Extracting content and crawl statistics and the training data in JSON format from the crawl database.
-* Run additional statistics scripts on the extracted training data, and determine Cookiepedia baseline performance.
-* Create resource files to aid in feature extraction for the classifier.
-* Gather evidence for potential violations given a crawl database as produced by the Consent Crawler.
+This repository provides the scripts that were used for the techniques of GDPR violation detection
+described in the master thesis report "Analyzing Cookies Compliance with the GDPR". The thesis report
+can be found at the following page:
+
+https://www.research-collection.ethz.ch/handle/20.500.11850/477333
+
+Particularly relevant to this repository is __Section 7: Automatic Violation Detection__. Here, six analyses
+are described with which to perform detection of potential GDPR violations, along with the legal justification
+as to why these can be considered violations in the first place.
+
+In order to use the scripts in this folder, a database as collected by the "CookieBlock Consent Crawler" is 
+required. The code for this can be found in the following repository:
+
+https://github.com/dibollinger/CookieBlock-Consent-Crawler
+
+Additionally, the data collected during the thesis can be found in the following Google Drive folder:
+
+https://drive.google.com/drive/folders/1P2ikGlnb3Kbb-FhxrGYUPvGpvHeHy5ao
 
 ## Repository Contents
 
-* `cookiedata_analysis/`: Contains scripts to analyze the training data and to produce the Cookiepedia baseline performance.
-* `database_scripts/`: Contains scripts to extract statistics from the database (using SQL statements) and to match consent table with cookie data, to produce the training input for the classifier.
-* `domain_sources/`: Contains the domains used for crawling the database as well as scripts to retrieve them and to prune duplicates
-* `feature_resources/`: Contains scripts to produce resource files used with the feature extraction of the classifier.
-* `violation_detection/`: Contains scripts to automatically gather evidence for potential GDPR violations.
+* `violation_stats/`: Target folder for all outputs.
+* `list_undetected_cookies.py`: Lists out all cookie declarations that have no matching observed cookie.
+* `method1_wrong_label.py`: Finds all instances of a known cookie with a mismatched class. Corresponds to method 1 in the report.
+* `method2_majority_deviation.py`: Computes the majority class for a cookie, then finds all deviations from the majority. Corresponds to method 2 in the report.
+* `method3_inconsistent_expiry.py`: Finds all cookies where the expiration date deviates by 1.5 times the declared date. Corresponds to method 3 in the report.
+* `method4_unclassified_cookies.py`: Finds all unclassified cookies. Corresponds to method 4 in the report.
+* `method5_undeclared_cookies.py`: Finds all cookies that have been encountered but not declared. Corresponds to method 5 in the report.
+* `method6_contradictory_labels.py`: Finds all cookies that were given multiple contradictory purposes by the CMP. Method 6 in the report.
+* `utils.py`: Contains shared script functions.
 
-----
-## Credits and License
+## Credits
 
-Copyright © 2021 Dino Bollinger
+This repository was created as part of the master thesis __"Analyzing Cookies Compliance with the GDPR"__, 
+which can be found here:
 
-MIT License, see included LICENSE file
-
----
-
-The scripts in this repository were created as part of a master thesis on GDPR Compliance, 
-and is part of a series of repositories for the __CookieBlock__ browser extension:
-
-https://github.com/dibollinger/CookieBlock
+https://www.research-collection.ethz.ch/handle/20.500.11850/477333
 
 __Thesis Supervision and Assistance:__
 * Karel Kubicek
 * Dr. Carlos Cotrini
 * Prof. Dr. David Basin
-* The Institute of Information Security at ETH Zürich
+* Information Security Group at ETH Zürich
+
+---
+See also the following repositories for other components that were developed as part of the thesis:
+
+* [CookieBlock Browser Extension](https://github.com/dibollinger/CookieBlock)
+* [OpenWPM-based Consent Crawler](https://github.com/dibollinger/CookieBlock-Consent-Crawler)
+* [Cookie Classifier](https://github.com/dibollinger/CookieBlock-Consent-Classifier)
+* [Prototype Consent Crawler](https://github.com/dibollinger/CookieBlock-Crawler-Prototype)
+* [Collected Data](https://drive.google.com/drive/folders/1P2ikGlnb3Kbb-FhxrGYUPvGpvHeHy5ao)
+
+## License
+
+__Copyright © 2021 Dino Bollinger, Department of Computer Science at ETH Zürich, Information Security Group__
+
+MIT License, see included LICENSE file
