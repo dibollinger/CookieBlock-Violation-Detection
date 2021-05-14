@@ -19,6 +19,13 @@ Additionally, the data collected during the thesis can be found in the following
 
 https://drive.google.com/drive/folders/1P2ikGlnb3Kbb-FhxrGYUPvGpvHeHy5ao
 
+## Setup and Requirements
+
+No installation or setup necessary. For library requirements, see `requirements.txt`.
+
+Each script can be executed independently. Required input is usually a database created and filled by the 
+CookieBlock Consent Crawler.
+
 ## Repository Contents
 
 * `violation_stats/`: Target folder for all outputs.
