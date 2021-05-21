@@ -113,12 +113,22 @@ def main():
     total_cookies = 0
     for k_item, val in cookies_dict.items():
 
-        if val["label"] == -1 or val["label"] == 6:
+        # only consider main 4 categories
+        if val["label"] < 0 or val["label"] > 3:
             continue
+
+        # do not consider unknown category cookies
+        # if val["label"] == -1 or val["label"] == 6:
+        #    continue
 
         key = (val["name"], val["domain"])
         sum_total = sum(l_ident[key][0:6])
         expected_label = int(argmax(l_ident[key][0:6]))
+
+        # Only recognize majorities for necessary, functional, analytics, advertising and social media
+        if (expected_label < 0 or expected_label > 3) and expected_label != 5:
+            continue
+
         maj_ratio = l_ident[key][expected_label] / sum_total if sum_total > 0 else 0
         if sum_total >= threshold and maj_ratio > min_ratio and int(val["label"]) != expected_label:
             #logger.info(f"Potential Violation found for cookie {val['name']}, {val['domain']}, {val['site_url']}"
@@ -156,12 +166,12 @@ def main():
         for c in violating_cookies:
             confusion_matrix[int(c["majority"])][int(c["label"])] += 1
 
-    logger.info(f"Majority Necessary: {confusion_matrix[0]}")
-    logger.info(f"Majority Functional: {confusion_matrix[1]}")
-    logger.info(f"Majority Analytics: {confusion_matrix[2]}")
-    logger.info(f"Majority Advertising: {confusion_matrix[3]}")
-    logger.info(f"Majority Uncategorized: {confusion_matrix[4]}")
-    logger.info(f"Majority Social Media: {confusion_matrix[5]}")
+    logger.info(f"Majority Necessary: {confusion_matrix[0][0:4]}")
+    logger.info(f"Majority Functional: {confusion_matrix[1][0:4]}")
+    logger.info(f"Majority Analytics: {confusion_matrix[2][0:4]}")
+    logger.info(f"Majority Advertising: {confusion_matrix[3][0:4]}")
+#    logger.info(f"Majority Uncategorized: {confusion_matrix[4]}")
+#    logger.info(f"Majority Social Media: {confusion_matrix[5]}")
 
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
     write_json(violation_details, "method2_cookies.json")

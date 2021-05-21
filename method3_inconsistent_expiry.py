@@ -30,10 +30,10 @@ global inconsistency_details, inconsistency_domains, inconsistency_count
 second_pattern = re.compile("(second(s)?|sekunde(n)?)", re.IGNORECASE)
 minute_pattern = re.compile("(minute[ns]?)", re.IGNORECASE)
 hour_pattern = re.compile("(hour(s)?|stunde(n)?)", re.IGNORECASE)
-day_pattern = re.compile("(day(s)?|日|deň|dies|diena|dni|dní|den|dan|dag(en)?|dia|día|gün|nap|lá|dana|giorn[oi]|tag(e)?|zi(le)?|jour(s)?|días|dienos|päev|päivää|päivä|ημέρα|ημέρες|dzień|день|днів|дни|ден|laethanta|일)", re.IGNORECASE)
+day_pattern = re.compile("(day(s)?|日|วัน|дней|deň|dies|diena|dni|dní|den|dan|dag(en)?|dia|día|gün|nap|lá|dana|giorn[oi]|tag(e)?|zi(le)?|jour(s)?|días|dienos|päev|päivää|päivä|ημέρα|ημέρες|dzień|день|днів|дни|ден|laethanta|일)", re.IGNORECASE)
 week_pattern = re.compile("(week(s)?|woche(n)?)", re.IGNORECASE)
-month_pattern = re.compile("(month(s)?|maand(en)?|měsíců|mesi|kuud|ay|md\.|mdr\.|mois|monat(e)?|meses|mēneši|mesec[ai]|míonna|måneder|місяців|месеца|mjeseci|miesiące|kuukautta|μήνες|luni|mėnesiai|månader|mánuðir|hónap|месяцы|mesos|ヶ月)", re.IGNORECASE)
-year_pattern = re.compile("(year(s)?|jahr(e)?|anno|année|anni|gads|gadi|an|ár|jaar(en)?|rok|lat|év|ani|år|років|urte|año|ano|yıl|blianta|bliain|let|aastat|urte|aasta|godin[ae]?|έτος|έτη|vuosi|vuotta|metai|год|годы|рік|年|년|سنة)", re.IGNORECASE)
+month_pattern = re.compile("(month(s)?|maand(en)?|månad|měsíců|mesi|kuud|ay|md\.|mdr\.|mois|monat(e)?|meses|mēneši|mesec[ai]|míonna|måneder|місяців|месеца|mjeseci|miesiące|kuukautta|μήνες|luni|mėnesiai|månader|mánuðir|hónap|месяцы|mesos|ヶ月)", re.IGNORECASE)
+year_pattern = re.compile("(year(s)?|jahr(e)?|anno|ปี|année|anni|gads|gadi|an|ár|jaar(en)?|rok|lat|év|ani|tahun|år|років|urte|año|ano|yıl|blianta|bliain|let|aastat|urte|aasta|godin[ae]?|έτος|έτη|vuosi|vuotta|metai|год|годы|рік|年|년|سنة)", re.IGNORECASE)
 
 # 1 month
 # min_diff = 3600 * 24 * 30
@@ -198,7 +198,7 @@ def main():
                     found_inconsistency(key, val, v, "session_as_persistent")
                     sess_as_persistent += 1
                     break
-        else:
+        elif val["consent_expiry"]:
             for v in val["variable_data"]:
                 if v["session"]:
                     found_inconsistency(key, val, v, "persistent_as_session")
@@ -217,7 +217,8 @@ def main():
                     else:
                         logger.warning(f"Skipped because could not convert date: {val['consent_expiry']}")
                         break
-
+        else:
+            logger.info(f"Expiry string was empty for cookie: {val['name']};{val['domain']}")
     conn.close()
 
     logger.info(f"Number of cookies with expiries: {total_cookies}")
