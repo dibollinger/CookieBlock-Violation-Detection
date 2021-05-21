@@ -39,7 +39,7 @@ year_pattern = re.compile("(year(s)?|jahr(e)?|anno|année|anni|gads|gadi|an|ár|
 # min_diff = 3600 * 24 * 30
 
 
-def convert_consent_expiry_to_seconds(expiry_string: str, cmp_type:int) -> int:
+def convert_consent_expiry_to_seconds(expiry_string: str, cmp_type: int) -> int:
     """
     Transform the input string into a numerical format (seconds)
     @param expiry_string: String in the format (count, time)

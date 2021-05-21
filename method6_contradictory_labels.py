@@ -16,7 +16,7 @@ import sqlite3
 
 import logging
 from utils import (setupLogger, CONSENTDATA_QUERY, get_violation_details_consent_table,
-                                       write_json, write_vdomains)
+                   write_json, write_vdomains)
 
 logger = logging.getLogger("vd")
 
@@ -101,6 +101,7 @@ def main():
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
     write_json(violation_details, "method6_cookies.json")
     write_vdomains(violation_domains, "method6_domains.txt")
+    write_vdomains(set_nec_sites, "method6_necessary_domains.txt")
 
     return 0
 

@@ -126,7 +126,7 @@ ORDER BY j.visit_id, j.name, time_stamp ASC;
 
 logger = logging.getLogger("vd")
 
-def setupLogger(logdir:str, logLevel=logging.DEBUG) -> None:
+def setupLogger(logdir:str, logLevel=logging.DEBUG):
     """
     Set up the logger instance. INFO output to stderr, DEBUG output to log file.
     :param logdir: Directory for the log file.
@@ -145,7 +145,7 @@ def setupLogger(logdir:str, logLevel=logging.DEBUG) -> None:
     logger.addHandler(fh)
 
     logger.info("---------------------------------")
-
+    return logger
 
 time_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
@@ -184,8 +184,8 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
 
     # while collecting the data, also determine how many training entries were collected for each label
     # [necessary, functional, analytic, advertising]
-    counts_per_unique_cookie = [0, 0, 0, 0, 0, 0]
-    counts_per_cookie_update = [0, 0, 0, 0, 0, 0]
+    counts_per_unique_cookie = [0, 0, 0, 0, 0, 0, 0]
+    counts_per_cookie_update = [0, 0, 0, 0, 0, 0, 0]
     mismatch_count = 0
     update_count = 0
 
@@ -202,10 +202,12 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
 
                 cat_id = int(row["cat_id"])
 
-                if cat_id == -1:
+                if cat_id == 4:
                     cat_id = 4
                 elif cat_id == 99:
                     cat_id = 5
+                elif cat_id == -1:
+                    cat_id = 6
 
                 # In rare cases, the expiration date can be set to the year 10000 and upwards.
                 # This forces a different ISO time format than the one we normally expect.
@@ -223,7 +225,7 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
                 domains_match: bool = False
                 for domain_entry in consent_domains:
                     canon_cdom = canonical_domain(domain_entry)
-                    if re.search(canon_cdom, canon_adom, re.IGNORECASE):
+                    if re.search(re.escape(canon_cdom), canon_adom, re.IGNORECASE):
                         domains_match = True
                         break
 
@@ -320,7 +322,7 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
         logger.info(counts_per_cookie_update)
 
         all_temp: List[int] = []
-        stats_temp: List[List[int]] = [[], [], [], [], [], []]
+        stats_temp: List[List[int]] = [[], [], [], [], [], [], []]
         for (k, l), c in updates_per_cookie_entry.items():
             stats_temp[l].append(c)
             all_temp.append(c)
@@ -331,7 +333,7 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
         logger.info(f"Total average of updates: {mean(all_temp)}")
         logger.info(f"Standard Deviation of updates: {stdev(all_temp)}")
 
-    return json_data, updates_per_cookie_entry
+    return json_data, counts_per_unique_cookie
 
 
 

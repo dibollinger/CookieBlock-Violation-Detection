@@ -21,7 +21,7 @@ import re
 
 import logging
 from utils import (setupLogger, CONSENTDATA_QUERY, write_json,
-                                       get_violation_details_consent_table, write_vdomains)
+                   get_violation_details_consent_table, write_vdomains)
 
 logger = logging.getLogger("vd")
 
@@ -64,7 +64,7 @@ def main():
     # some variables to collect violation details with
     violation_details = dict()
     violation_domains = set()
-    violation_counts = [0, 0, 0, 0, 0, 0]
+    violation_counts = [0, 0, 0, 0, 0, 0, 0]
     total_domains = set()
     total_matching_cookies = 0
 
@@ -91,7 +91,7 @@ def main():
 
                     cat_id = row["cat_id"]
                     if cat_id == -1:
-                        cat_id = 4
+                        cat_id = 6
                     elif cat_id == 99:
                         cat_id = 5
 

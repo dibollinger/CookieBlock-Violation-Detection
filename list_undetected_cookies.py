@@ -1,8 +1,8 @@
 # Copyright (C) 2021 Dino Bollinger, ETH Zürich, Information Security Group
 # Released under the MIT License
 """
-Using a database of collected cookie + label data, determine all cookies on websites t
-hat have been declared but not been found by the crawler.
+Using a database of collected cookie + label data, determine all cookies on websites that
+have been declared but not been found by the crawler.
 ----------------------------------
 Required arguments:
     <db_path>   Path to database to analyze.
@@ -71,8 +71,8 @@ def main():
     undetected_details = dict()
     undetected_sites = set()
     total_sites = set()
-    detected_count = [0,0,0,0,0,0]
-    undetected_count = [0,0,0,0,0,0]
+    detected_count = [0,0,0,0,0,0,0]
+    undetected_count = [0,0,0,0,0,0,0]
     total_count = 0
 
     # Compare to data in Consent table. May have multiple domains listed
@@ -101,9 +101,9 @@ def main():
                 undetected_sites.add(vdomain)
 
                 if label == -1:
-                    undetected_count[5] += 1
+                    undetected_count[6] += 1
                 if label == 99:
-                    undetected_count[4] += 1
+                    undetected_count[5] += 1
                 else:
                     undetected_count[label] += 1
 
@@ -113,9 +113,9 @@ def main():
                 undetected_details[vdomain].append(get_violation_details_consent_table(row))
             else:
                 if label == -1:
-                    detected_count[5] += 1
+                    detected_count[6] += 1
                 if label == 99:
-                    detected_count[4] += 1
+                    detected_count[5] += 1
                 else:
                     detected_count[label] += 1
 
@@ -128,7 +128,6 @@ def main():
     logger.info(f"Total sites: {len(total_sites)}")
     logger.info(f"Sites with cookies that were not found: {len(undetected_sites)}")
     logger.info(f"Average number of undetected cookies per site: {sum(undetected_count)/len(total_sites):.2f}")
-    exit(0)
     cmp_count = [0, 0, 0]
     v_per_cmp = [0, 0, 0]
     for url, ic_cookies in undetected_details.items():

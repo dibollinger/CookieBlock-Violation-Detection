@@ -58,7 +58,7 @@ def main():
         cur = conn.cursor()
         cur.execute(CONSENTDATA_QUERY)
         for row in cur:
-            if unclass_pattern.match(row["cat_name"]):
+            if row["cat_id"] == 4 or unclass_pattern.match(row["cat_name"]):
                 #logger.debug(f"Potential Violation: {row['consent_name']};{row['consent_domain']};{row['cat_name']}")
                 vdomain = row["site_url"]
                 violation_domains.add(vdomain)

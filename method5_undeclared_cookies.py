@@ -19,7 +19,7 @@ import re
 
 import logging
 from utils import (setupLogger, CONSENTDATA_QUERY, write_vdomains,
-                                       JAVASCRIPTCOOKIE_QUERY, write_json, canonical_domain)
+                   JAVASCRIPTCOOKIE_QUERY, write_json, canonical_domain)
 
 
 logger = logging.getLogger("vd")
@@ -142,7 +142,6 @@ def main():
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
     write_json(violation_details, "method5_cookies.json")
     write_vdomains(violation_domains, "method5_domains.txt")
-
 
     return 0
 
