@@ -113,6 +113,9 @@ def main():
     total_cookies = 0
     for k_item, val in cookies_dict.items():
 
+        total_cookies += 1
+        total_domains.add(val["site_url"])
+
         # only consider main 4 categories
         if val["label"] < 0 or val["label"] > 3:
             continue
@@ -145,8 +148,6 @@ def main():
 
             violation_domains.add(vdomain)
             violation_count += 1
-        total_cookies += 1
-        total_domains.add(val["site_url"])
 
     conn.close()
     logger.info(f"Total cookies analyzed: {total_cookies}")
