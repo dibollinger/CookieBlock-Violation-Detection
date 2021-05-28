@@ -36,7 +36,7 @@ month_pattern = re.compile("(month(s)?|maand(en)?|månad|měsíců|mesi|kuud|ay|
 year_pattern = re.compile("(year(s)?|jahr(e)?|anno|ปี|année|anni|gads|gadi|an|ár|jaar(en)?|rok|lat|év|ani|tahun|år|років|urte|año|ano|yıl|blianta|bliain|let|aastat|urte|aasta|godin[ae]?|έτος|έτη|vuosi|vuotta|metai|год|годы|рік|年|년|سنة)", re.IGNORECASE)
 
 # 1 month
-# min_diff = 3600 * 24 * 30
+min_diff = 3600 * 24
 
 
 def convert_consent_expiry_to_seconds(expiry_string: str, cmp_type: int) -> int:
@@ -208,9 +208,7 @@ def main():
                     converted = convert_consent_expiry_to_seconds(val["consent_expiry"], val["cmp_type"])
                     if converted != -1:
                         diff = abs(v["expiry"] - converted)
-                        #if diff >= min_diff:
-                        # If expiry time exceeds 1.5 times the declared time, inconsistency is found
-                        if v["expiry"] > converted * 1.5:
+                        if diff >= min_diff and v["expiry"] > converted * 1.5:
                             found_inconsistency(key, val, v, diff)
                             wrong_expiry += 1
                             break
