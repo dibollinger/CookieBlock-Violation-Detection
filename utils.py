@@ -347,6 +347,8 @@ def get_violation_details_consent_table(row: Dict) -> Dict:
              "purpose": row["purpose"],
              "label": row["cat_id"],
              "cat_name": row["cat_name"],
+             "cookiebot_type_id": row["type_id"],
+             "cookiebot_type_name": row["type_name"],
              "expiry": row["consent_expiry"]}
 
 

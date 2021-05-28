@@ -107,8 +107,10 @@ def found_inconsistency(key, full_cookie_data, update, diff):
     """
     global inconsistency_details, inconsistency_domains, inconsistency_count
 
+    diffseconds = None
     if diff != "persistent_as_session" and diff != "session_as_persistent":
-        consent_expiry_str = str(datetime.timedelta(seconds=convert_consent_expiry_to_seconds(full_cookie_data['consent_expiry'], full_cookie_data["cmp_type"])))
+        diffseconds = convert_consent_expiry_to_seconds(full_cookie_data['consent_expiry'], full_cookie_data["cmp_type"])
+        consent_expiry_str = str(datetime.timedelta(seconds=diffseconds))
     else:
         consent_expiry_str = full_cookie_data['consent_expiry']
 
@@ -132,7 +134,9 @@ def found_inconsistency(key, full_cookie_data, update, diff):
         **full_cookie_data,
         "consent_expiry_str": consent_expiry_str,
         "true_expiry_str": actual_expiry_str,
-        "expiry_diff": diff_expiry_str
+        "expiry_diff": diff_expiry_str,
+        "expiry_diff_seconds": None if type(diff) is str else diff,
+        "expiry_ratio": None if not diffseconds else update['expiry'] / diffseconds
     })
 
 
