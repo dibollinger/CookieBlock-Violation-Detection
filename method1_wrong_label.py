@@ -85,14 +85,12 @@ def main():
             if name_pattern.match(row["consent_name"]) and domain_pattern.search(row["consent_domain"]):
                 total_domains.add(row["site_url"])
                 total_matching_cookies += 1
-                if row["cat_id"] != expected_label:
+                if row["cat_id"] != expected_label and row["cat_id"] != -1:
                     #logger.info(f"Potential Violation on website: {row['site_url']} for cookie entry: {row['consent_name']};{row['consent_domain']}")
                     #logger.info(f"Entry matches pattern, but given label was {row['cat_id']}")
 
                     cat_id = row["cat_id"]
-                    if cat_id == -1:
-                        cat_id = 6
-                    elif cat_id == 99:
+                    if cat_id == 99:
                         cat_id = 5
 
                     vdomain = row["site_url"]
