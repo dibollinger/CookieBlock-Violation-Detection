@@ -1,3 +1,5 @@
+# Copyright (C) 2021 Dino Bollinger, ETH Zürich, Information Security Group
+# Released under the MIT License
 """
 Aggregate violation detections statistics
 """
