@@ -205,8 +205,8 @@ def main():
         elif val["consent_expiry"]:
             for v in val["variable_data"]:
                 if v["session"]:
-                    found_inconsistency(key, val, v, "persistent_as_session")
-                    pers_as_session_count += 1
+                    found_inconsistency(key, val, v, "session_as_persistent")
+                    sess_as_persistent += 1
                     break
                 else:
                     converted = convert_consent_expiry_to_seconds(val["consent_expiry"], val["cmp_type"])
