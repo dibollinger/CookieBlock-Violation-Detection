@@ -1,8 +1,8 @@
 # GDPR Violation Detection for Consent Management Platforms
 
 This repository provides the scripts that were used for the techniques of GDPR violation detection
-described in the master thesis report "Analyzing Cookies Compliance with the GDPR", as well as the
-paper "Automating Cookie Consent and GDPR Violation Detection". 
+described in the master thesis report __"Analyzing Cookies Compliance with the GDPR"__, as well as the
+paper __"Automating Cookie Consent and GDPR Violation Detection"__. 
 
 The paper can be found here:
 
@@ -62,11 +62,11 @@ by the CookieBlock Consent Crawler. More information is given below.
 ## Credits
 
 This repository was created as part of the master thesis __"Analyzing Cookies Compliance with the GDPR"__, 
-which can be found here:
+which can be found at:
 
 https://www.research-collection.ethz.ch/handle/20.500.11850/477333
 
-as well as the paper "Automating Cookie Consent and GDPR Violation Detection", which can be found at:
+as well as the paper __"Automating Cookie Consent and GDPR Violation Detection"__, which can be found at:
 
 https://karelkubicek.github.io/post/cookieblock.html
 
