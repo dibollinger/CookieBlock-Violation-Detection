@@ -1,22 +1,19 @@
 # Copyright (C) 2021 Dino Bollinger, ETH Zürich, Information Security Group
 # Released under the MIT License
 """
-Contains shared functions
+Contains functions that are shared between the analysis scripts.
 """
-
 from statistics import mean, stdev
 from typing import Dict, Set, List, Tuple, Any, Union
 import traceback
 import sqlite3
-
 import json
 import os
 import logging
 from datetime import datetime
 import re
 
-
-# SQL command to extract the training data from the database
+# Query to match cookie declarations with observed cookies, and retrieve crawl state results.
 MATCHED_COOKIEDATA_QUERY = """
 SELECT DISTINCT j.visit_id,
         s.site_url,
@@ -47,41 +44,7 @@ WHERE j.record_type <> "deleted"
 ORDER BY j.visit_id, j.name, time_stamp ASC;
 """
 
-# SQL command to extract the training data from the database
-MATCHED_COOKIEDATA_QUERY_WITHLENGTH = """
-SELECT DISTINCT j.visit_id,
-        s.site_url,
-        ccr.cmp_type as cmp_type,
-        ccr.crawl_state,
-        j.name,
-        j.host as cookie_domain,
-        j.path,
-        c.domain as consent_domain,
-        j.value,
-        c.purpose,
-        c.cat_id,
-        c.cat_name,
-        c.type_name,
-        c.type_id,
-        c.expiry as consent_expiry,
-        j.expiry as actual_expiry,
-        j.is_session,
-        j.is_http_only,
-        j.is_host_only,
-        j.is_secure,
-        j.same_site,
-        j.time_stamp,
-        c.cookie_length
-FROM consent_data c
-JOIN javascript_cookies j ON c.visit_id == j.visit_id and c.name == j.name
-JOIN site_visits s ON s.visit_id == c.visit_id
-JOIN consent_crawl_results ccr ON ccr.visit_id == c.visit_id
-WHERE j.record_type <> "deleted"
-ORDER BY j.visit_id, j.name, time_stamp ASC;
-"""
-
-
-# Extracts data from the consent table
+# Extracts data from the cookie declaration table only, combined with crawl state results.
 CONSENTDATA_QUERY = """
 SELECT DISTINCT c.visit_id,
         s.site_url,
@@ -100,7 +63,7 @@ JOIN site_visits s ON s.visit_id == c.visit_id
 JOIN consent_crawl_results ccr ON ccr.visit_id == c.visit_id
 """
 
-# SQL command to extract the training data from the database
+# Extracts data from the observed cookie table, match with crawl state results.
 JAVASCRIPTCOOKIE_QUERY = """
 SELECT DISTINCT j.visit_id,
         s.site_url,
@@ -125,6 +88,7 @@ ORDER BY j.visit_id, j.name, time_stamp ASC;
 """
 
 logger = logging.getLogger("vd")
+time_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 def setupLogger(logdir:str, logLevel=logging.DEBUG):
     """
@@ -147,10 +111,8 @@ def setupLogger(logdir:str, logLevel=logging.DEBUG):
     logger.info("---------------------------------")
     return logger
 
-time_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
-
-def compute_expiry_time_in_seconds(start_ts: str, end_ts: str, session:int) -> int:
+def compute_expiry_time_in_seconds(start_ts: str, end_ts: str, session: int) -> int:
     if session:
         return 0
     else:
@@ -168,8 +130,7 @@ def canonical_domain(dom: str) -> str:
     return canon_dom
 
 
-
-def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bool = False):
+def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection):
     """
     Retrieves cookies that were found in both the javascript cookies table, and the consent table.
     @param conn: Database connection
@@ -178,9 +139,8 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
     json_data: Dict[str, Dict[str, Any]] = dict()
     updates_per_cookie_entry: Dict[Tuple[str, int], int] = dict()
 
-    # blacklist, and detailed blacklist
+    # cookies that will be filtered due to having multiple categories assigned
     blacklist = set()
-    blacklist_entries_with_details = list()
 
     # while collecting the data, also determine how many training entries were collected for each label
     # [necessary, functional, analytic, advertising]
@@ -189,15 +149,12 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
     mismatch_count = 0
     update_count = 0
 
-    # counts the number of times a data entry was rejected due to blacklist
+    # counts the number of times a data entry was rejected due to multiple categories
     blacklisted_encounters = 0
     try:
         with conn:
             cur = conn.cursor()
-            if include_length:
-                cur.execute(MATCHED_COOKIEDATA_QUERY_WITHLENGTH)
-            else:
-                cur.execute(MATCHED_COOKIEDATA_QUERY)
+            cur.execute(MATCHED_COOKIEDATA_QUERY)
             for row in cur:
 
                 cat_id = int(row["cat_id"])
@@ -215,8 +172,8 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
                 if row["actual_expiry"].startswith("+0"):
                     continue
 
-                ## Verify that the cookie's domain matches the joined consent domain.
-                ## This requires string processing more complex than what's available in SQL.
+                # Verify that the observed cookie's domain matches the declared domain.
+                # This requires string processing more complex than what's available in SQL.
                 canon_adom: str = canonical_domain(row["cookie_domain"])
 
                 # Consent Management Platforms may specify multiple possible domains, split by linebreaks.
@@ -255,8 +212,6 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection, include_length:bo
                             #"purpose": row["purpose"],
                             "variable_data": []
                         }
-                        if include_length:
-                            json_data[json_cookie_key]["cookie_length"] = row["cookie_length"]
                         counts_per_unique_cookie[cat_id] += 1
                         updates_per_cookie_entry[(json_cookie_key, cat_id)] = 1
                     else:

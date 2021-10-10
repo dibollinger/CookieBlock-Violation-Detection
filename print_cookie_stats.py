@@ -52,9 +52,6 @@ def main():
 
     logger.info(f"Database used: {database_path}")
 
-    total_cookies = 0
-    total_domains = set()
-
     # enable dictionary access by column name, access database
     conn = sqlite3.connect(database_path)
     conn.row_factory = sqlite3.Row

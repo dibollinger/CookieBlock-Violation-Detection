@@ -1,7 +1,9 @@
 # Copyright (C) 2021 Dino Bollinger, ETH Zürich, Information Security Group
 # Released under the MIT License
 """
-Aggregate violation detections statistics
+Aggregate violation detections statistics. Used to produce the statistics used for the report and the paper.
+Requires all 8 method scripts to be executed first, which will produce their output in this directory.
+This script then produces several human-readable statistics that can then be extracted.
 """
 
 import json
@@ -14,6 +16,7 @@ from statistics import mean, median, stdev
 # I want to keep this script parameter-free, so here's how you reliably get the total number of domains:
 # Open database in sqlitebrowser, open table "consent_crawl_results", query "crawl_state == 0"
 # This will give all domains for which the consent crawl succeeded, which is the set of domains for which we can perform the analysis.
+# Then replace the count in the following line:
 total_domain_count = 29398
 known_cats = [(-1,"Unknown"), (0,"Necessary"), (1, "Functionality"), (2, "Analytics"), (3, "Advertising"), (4, "Uncategorised"), (5, "Social Media")]
 
