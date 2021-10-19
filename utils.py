@@ -283,10 +283,16 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection):
             all_temp.append(c)
 
         for i in range(len(stats_temp)):
-            logger.info(f"Average number of updates for category {i}: {mean(stats_temp[i])}")
-            logger.info(f"Standard Deviation of updates for category {i}: {stdev(stats_temp[i])}")
-        logger.info(f"Total average of updates: {mean(all_temp)}")
-        logger.info(f"Standard Deviation of updates: {stdev(all_temp)}")
+            if len(stats_temp[i]) > 1:
+                logger.info(f"Average number of updates for category {i}: {mean(stats_temp[i])}")
+                logger.info(f"Standard Deviation of updates for category {i}: {stdev(stats_temp[i])}")
+            else:
+                logger.info(f"Unable to collect statistics with for category {i} with {len(stats_temp[i])} samples")
+        if len(all_temp[i]) > 1:
+            logger.info(f"Total average of updates: {mean(all_temp)}")
+            logger.info(f"Standard Deviation of updates: {stdev(all_temp)}")
+        else:
+            logger.info(f"Unable to collect total statistics with {len(stats_temp[i])} samples")
 
     return json_data, counts_per_unique_cookie
 
