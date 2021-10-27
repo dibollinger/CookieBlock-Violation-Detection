@@ -6,8 +6,10 @@ by comparing the actual expiration date of a cookie to the declared expiration d
 ----------------------------------
 Required arguments:
     <db_path>  Path to database to analyze.
+Optional arguments:
+    --out_path <out_path>: Directory to store the resutls.
 Usage:
-    method3_inconsistent_expiry.py <db_path>
+    method3_inconsistent_expiry.py <db_path> [--out_path <out_path>]
 """
 
 
@@ -239,8 +241,12 @@ def main():
     logger.info(f"Number of session cookies declared as persistent cookies: {sess_as_persistent}")
     logger.info(f"Number of persistent cookies with wrong expiration date: {wrong_expiry}")
 
-    write_json(inconsistency_details, "method3_cookies.json")
-    write_vdomains(inconsistency_domains, "method3_domains.txt")
+    if cargs["--out_path"]:
+        out_path = cargs["--out_path"]
+    else:
+        out_path = "./violation_stats/"
+    write_json(inconsistency_details, "method3_cookies.json", out_path)
+    write_vdomains(inconsistency_domains, "method3_domains.txt", out_path)
 
     return 0
 

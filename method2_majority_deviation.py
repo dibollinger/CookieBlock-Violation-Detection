@@ -5,8 +5,12 @@ Using a database of collected cookie + label data, find potential GDPR violation
 outputting all deviations from the majority opinion for a cookie identified by name
 and domain, where the occurrences for that cookie need to be greater than a threshold.
 ----------------------------------
+Required arguments:
+    <db_path>   Path to database to analyze.
+Optional arguments:
+    --out_path <out_path>: Directory to store the resutls.
 Usage:
-    method2_majority_deviation.py <db_path>
+    method2_majority_deviation.py <db_path> [--out_path <out_path>]
 """
 
 import os
@@ -175,8 +179,13 @@ def main():
 #    logger.info(f"Majority Social Media: {confusion_matrix[5]}")
 
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
-    write_json(violation_details, "method2_cookies.json")
-    write_vdomains(violation_domains, "method2_domains.txt")
+
+    if cargs["--out_path"]:
+        out_path = cargs["--out_path"]
+    else:
+        out_path = "./violation_stats/"
+    write_json(violation_details, "method2_cookies.json", out_path)
+    write_vdomains(violation_domains, "method2_domains.txt", out_path)
 
     return 0
 

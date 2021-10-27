@@ -10,8 +10,9 @@ Optional arguments:
     <name_pattern>: Specifies the regex pattern for the cookie name.
     <domain_pattern>: Specifies the regex pattern for the cookie domain.
     <expected_label>: Expected label for the cookie.
+    --out_path <out_path>: Directory to store the resutls.
 Usage:
-    method1_wrong_label.py <db_path> [<name_pattern> <domain_pattern> <expected_label>]
+    method1_wrong_label.py <db_path> [<name_pattern> <domain_pattern> <expected_label> --out_path <out_path>]
 """
 
 from docopt import docopt
@@ -114,8 +115,13 @@ def main():
             v_per_cmp[c["cmp_type"]] += 1
 
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
-    write_json(violation_details, "method1_cookies.json")
-    write_vdomains(violation_domains, "method1_domains.txt")
+
+    if cargs["--out_path"]:
+        out_path = cargs["--out_path"]
+    else:
+        out_path = "./violation_stats/"
+    write_json(violation_details, "method1_cookies.json", out_path)
+    write_vdomains(violation_domains, "method1_domains.txt", out_path)
 
     return 0
 
