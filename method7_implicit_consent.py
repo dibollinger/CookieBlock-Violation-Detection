@@ -6,8 +6,10 @@ the declared cookies that are part of the functionality, analytics and advertisi
 ----------------------------------
 Required arguments:
     <db_path>   Path to database to analyze.
+Optional arguments:
+    --out_path <out_path>: Directory to store the resutls.
 Usage:
-    method7_implicit_consent.py <db_path>
+    method7_implicit_consent.py <db_path> [--out_path <out_path>]
 """
 import os
 import sqlite3
@@ -119,9 +121,15 @@ def main():
     logger.info(f"Cookie counts per class: {inconsistency_counts}")
     logger.info(f"Cookie counts per class (cookiebot): {cookiebot_inconsistency_counts}")
     logger.info(f"Sum of functional, analytics and advertising: {sum(inconsistency_counts[1:4])}")
-    logger.info(f"Sum of functional, analytics and advertising (cookiebot): {sum(cookiebot_inconsistency_counts)}")
+    logger.info(f"Sum of functional, analytics and advertising (cookiebot): {sum(cookiebot_inconsistency_counts[1:])}")
 
-    os.makedirs("./violation_stats/method7/",exist_ok=True)
+    if cargs["--out_path"]:
+        out_path = cargs["--out_path"] + "method7/"
+    else:
+        out_path = "./violation_stats/method7/"
+
+    os.makedirs(out_path, exist_ok=True)
+
     for i in range(0, len(inconsistency_domains)):
         logger.info("-------------------------------------------------------------")
 
@@ -136,8 +144,8 @@ def main():
 
         logger.info(f"Cookies per CMP Type: {v_per_cmp}")
 
-        write_json(inconsistency_details[i], f"method7/method7_cookies_{inconsistency_names[i]}.json")
-        write_vdomains(inconsistency_domains[i], f"method7/method7_domains_{inconsistency_names[i]}.txt")
+        write_json(inconsistency_details[i], f"method7_cookies_{inconsistency_names[i]}.json", out_path)
+        write_vdomains(inconsistency_domains[i], f"method7_domains_{inconsistency_names[i]}.txt", out_path)
     logger.info("-------------------------------------------------------------")
     return 0
 

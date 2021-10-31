@@ -5,9 +5,11 @@ Using a database of collected cookie + label data, determine potential GDPR viol
 determining uncategorized cookies, which usually cannot be rejected and have no description.
 ----------------------------------
 Required arguments:
-    <db_path>   Path to database to analyze.
+    <db_path>  Path to database to analyze.
+Optional arguments:
+    --out_path <out_path>: Directory to store the resutls.
 Usage:
-    method4_unclassified_cookies.py <db_path>
+    method4_unclassified_cookies.py <db_path> [--out_path <out_path>]
 """
 
 from docopt import docopt
@@ -85,8 +87,12 @@ def main():
             v_per_cmp[c["cmp_type"]] += 1
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
 
-    write_json(violation_details, "method4_cookies.json")
-    write_vdomains(violation_domains, "method4_domains.txt")
+    if cargs["--out_path"]:
+        out_path = cargs["--out_path"]
+    else:
+        out_path = "./violation_stats/"
+    write_json(violation_details, "method4_cookies.json", out_path)
+    write_vdomains(violation_domains, "method4_domains.txt", out_path)
 
     return 0
 

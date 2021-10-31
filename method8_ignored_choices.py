@@ -6,8 +6,10 @@ from Cookiebot where we can verify that the consent was rejected.
 ----------------------------------
 Required arguments:
     <db_path>   Path to database to analyze.
+Optional arguments:
+    --out_path <out_path>: Directory to store the resutls.
 Usage:
-    method8_ignored_choices.py <db_path>
+    method8_ignored_choices.py <db_path> [--out_path <out_path>]
 """
 import os
 import sqlite3
@@ -94,7 +96,13 @@ def main():
     logger.info(f"Cookie counts per class: {inconsistency_counts}")
     logger.info(f"Sum of functional, analytics and advertising: {sum(inconsistency_counts[1:4])}")
 
-    os.makedirs("./violation_stats/method8/", exist_ok=True)
+    if cargs["--out_path"]:
+        out_path = cargs["--out_path"] + "method7/"
+    else:
+        out_path = "./violation_stats/method7/"
+
+    os.makedirs(out_path, exist_ok=True)
+
     for i in range(0, 5):
         logger.info("-------------------------------------------------------------")
         logger.info(f"Total number of domains that created a cookie of label '{inconsistency_names[i]}': {len(inconsistency_domains[i])}")
@@ -107,8 +115,8 @@ def main():
 
         logger.info(f"Cookies per CMP Type: {v_per_cmp}")
 
-        write_json(inconsistency_details[i], f"method8/method8_cookies_{inconsistency_names[i]}.json")
-        write_vdomains(inconsistency_domains[i], f"method8/method8_domains_{inconsistency_names[i]}.txt")
+        write_json(inconsistency_details[i], f"method8_cookies_{inconsistency_names[i]}.json", out_path)
+        write_vdomains(inconsistency_domains[i], f"method8_domains_{inconsistency_names[i]}.txt", out_path)
     logger.info("-------------------------------------------------------------")
 
     return 0

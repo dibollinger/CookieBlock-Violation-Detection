@@ -286,13 +286,9 @@ def retrieve_matched_cookies_from_DB(conn: sqlite3.Connection):
             if len(stats_temp[i]) > 1:
                 logger.info(f"Average number of updates for category {i}: {mean(stats_temp[i])}")
                 logger.info(f"Standard Deviation of updates for category {i}: {stdev(stats_temp[i])}")
-            else:
-                logger.info(f"Unable to collect statistics with for category {i} with {len(stats_temp[i])} samples")
-        if len(all_temp[i]) > 1:
+        if len(all_temp) > 1:
             logger.info(f"Total average of updates: {mean(all_temp)}")
             logger.info(f"Standard Deviation of updates: {stdev(all_temp)}")
-        else:
-            logger.info(f"Unable to collect total statistics with {len(stats_temp[i])} samples")
 
     return json_data, counts_per_unique_cookie
 
@@ -314,13 +310,12 @@ def get_violation_details_consent_table(row: Dict) -> Dict:
 
 
 
-def write_json(violation_details: Union[List,Dict], filename: str) -> None:
+def write_json(violation_details: Union[List,Dict], filename: str, output_path: str = "./violation_stats/") -> None:
     """
     Write pretty-printed JSON with indentation
     @param violation_details: Details of the offending cookie or consent table entry.
     @param filename: File to write it to.
     """
-    output_path = "./violation_stats/"
     os.makedirs(output_path, exist_ok=True)
     json_outfile = os.path.join(output_path, filename)
 
@@ -329,14 +324,15 @@ def write_json(violation_details: Union[List,Dict], filename: str) -> None:
     logger.info(f"Violations output to: '{json_outfile}'")
 
 
-def write_vdomains(vdomains: Set, fn: str) -> None:
+def write_vdomains(vdomains: Set, fn: str, output_path: str = "./violation_stats/") -> None:
     """
     Write a list of offending domains to disk.
     @param vdomains: offending domains
     @param fn: filename
     """
-    logger.info("Writing domains to folder 'violation_stats'")
-    path =  "./violation_stats/" + fn
+    os.makedirs(output_path, exist_ok=True)
+    path =  output_path + fn
+    logger.info(f"Writing domains to {path}")
     with open(path, 'w') as fd:
         for d in sorted(vdomains):
             fd.write(d + "\n")

@@ -7,8 +7,10 @@ This could potentially mean that these cookies cannot be consented to or rejecte
 ----------------------------------
 Required arguments:
     <db_path>   Path to database to analyze.
+Optional arguments:
+    --out_path <out_path>: Directory to store the resutls.
 Usage:
-    method5_undeclared_cookies.py <db_path>
+    method5_undeclared_cookies.py <db_path> [--out_path <out_path>]
 """
 
 from docopt import docopt
@@ -140,8 +142,13 @@ def main():
             v_per_cmp[c["cmp_type"]] += 1
 
     logger.info(f"Potential Violations per CMP Type: {v_per_cmp}")
-    write_json(violation_details, "method5_cookies.json")
-    write_vdomains(violation_domains, "method5_domains.txt")
+
+    if cargs["--out_path"]:
+        out_path = cargs["--out_path"]
+    else:
+        out_path = "./violation_stats/"
+    write_json(violation_details, "method5_cookies.json", out_path)
+    write_vdomains(violation_domains, "method5_domains.txt", out_path)
 
     return 0
 
