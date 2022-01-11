@@ -22,7 +22,7 @@ CONSENTCOOKIE_REJECTED = '''SELECT DISTINCT site_url
 FROM javascript_cookies j
 JOIN site_visits s on s.visit_id == j.visit_id
 JOIN consent_crawl_results cs on j.visit_id == cs.visit_id and cs.crawl_state == 0
-WHERE j.name == "CookieConsent" and j.value like "%necessary:true%" and j.value like "%preferences:false%" 
+WHERE j.name == "CookieConsent" and j.value like "%necessary:true%" and j.value like "%preferences:false%"
       and j.value like "%statistics:false%" and j.value like "%marketing:false%"'''
 
 
@@ -97,9 +97,9 @@ def main():
     logger.info(f"Sum of functional, analytics and advertising: {sum(inconsistency_counts[1:4])}")
 
     if cargs["--out_path"]:
-        out_path = cargs["--out_path"] + "method7/"
+        out_path = cargs["--out_path"] + "method8/"
     else:
-        out_path = "./violation_stats/method7/"
+        out_path = "./violation_stats/method8/"
 
     os.makedirs(out_path, exist_ok=True)
 
