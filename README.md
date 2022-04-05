@@ -23,9 +23,9 @@ repository:
 
 https://github.com/dibollinger/CookieBlock-Consent-Crawler
 
-The data collected during the thesis can be found in the following Google Drive folder:
+The data collected during the thesis can be found in the following Zenodo record:
 
-https://drive.google.com/drive/folders/1P2ikGlnb3Kbb-FhxrGYUPvGpvHeHy5ao
+https://zenodo.org/record/6413531
 
 ## Setup and Requirements
 
@@ -83,7 +83,7 @@ See also the following repositories for other components that were developed as 
 * [OpenWPM-based Consent Crawler](https://github.com/dibollinger/CookieBlock-Consent-Crawler)
 * [Cookie Classifier](https://github.com/dibollinger/CookieBlock-Consent-Classifier)
 * [Prototype Consent Crawler](https://github.com/dibollinger/CookieBlock-Crawler-Prototype)
-* [Collected Data for Thesis Report](https://drive.google.com/drive/folders/1P2ikGlnb3Kbb-FhxrGYUPvGpvHeHy5ao)
+* [Collected Data](https://zenodo.org/record/5633670)
 
 ## License
 
