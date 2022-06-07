@@ -83,7 +83,8 @@ See also the following repositories for other components that were developed as 
 * [OpenWPM-based Consent Crawler](https://github.com/dibollinger/CookieBlock-Consent-Crawler)
 * [Cookie Classifier](https://github.com/dibollinger/CookieBlock-Consent-Classifier)
 * [Prototype Consent Crawler](https://github.com/dibollinger/CookieBlock-Crawler-Prototype)
-* [Collected Data for Thesis Report](https://drive.google.com/drive/folders/1P2ikGlnb3Kbb-FhxrGYUPvGpvHeHy5ao)
+* [Collected Data](https://doi.org/10.5281/zenodo.5838646)
+
 
 ## License
 
