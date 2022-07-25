@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Dino Bollinger, ETH Zürich, Information Security Group
+# Copyright (C) 2021-2022 Dino Bollinger, ETH Zürich, Information Security Group
 # Released under the MIT License
 """
 Aggregate violation detections statistics. Used to produce the statistics used for the report and the paper.
@@ -406,4 +406,3 @@ logger.info("-------------------------------")
 logger.info("Method 8-specific Statistics: Ignored Consent Choices ( Only Cookiebot) ")
 logger.info("-------------------------------")
 m78_check(m8c_f, m8c_an, m8c_ad, m8c_uncat, None, 9446)
-
