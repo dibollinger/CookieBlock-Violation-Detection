@@ -254,7 +254,7 @@ logger.info(f"Number of sites with at least 25 unclassified cookies: {sum(counts
 compute_median_mean_stdev(m4c)
 
 logger.info("-------------------------------")
-logger.info("Method 5-specific Statistics: Unclassified Cookies")
+logger.info("Method 5-specific Statistics: Undeclared Cookies")
 logger.info("-------------------------------")
 
 m5_sites_with_count = []
